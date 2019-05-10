@@ -27,33 +27,23 @@ subject(:card) {described_class.new}
       it "starts journey" do
       card = Oystercard.new(10)
       card.touch_in(:entry_station)
-      expect(card).to be_in_journey
+      expect(card.in_journey?).to eq(true)
       end
     end
 
       describe 'entry station double' do
-        let (:entry_station) { double :one_journey}
+        let (:entry_station) { double :entry_station}
         it "remembers the station after touch_in" do
           card = Oystercard.new(10)
-          expect(card.touch_in(:entry_station)).to eq(card.one_journey)
+          expect(card.touch_in(:entry_station)).to eq(:entry_station)
         end
       end
-
-
 
     describe "#touch_out" do
       it "ends journey" do
         subject.touch_out(:exit_station)
         expect(subject).not_to be_in_journey
       end
-
-    #   it "forgets the entry_station" do
-    #     card = Oystercard.new(10)
-    #     card.touch_in(:entry_station)
-    #     card.touch_out(:exit_station)
-    #     expect(card.touch_out(:exit_station)).to eq(exit_station)
-    #   end
-    # end
 
       it "charges card on touch out" do
       expect {subject.touch_out(:exit_station)}.to change{subject.balance}.by(-Oystercard::FARE)
@@ -63,7 +53,6 @@ subject(:card) {described_class.new}
         card = Oystercard.new(10)
         card.touch_in(:entry_station)
         card.touch_out(:exit_station)
-
         expect(card.one_journey).to include(:entry_station, :exit_station)
       end
 
@@ -77,8 +66,7 @@ subject(:card) {described_class.new}
       end
 
       it 'checks that the journey log is empty' do
-        expect(card.journey_log).to eq []
+        expect(card.log).to eq [{}]
       end
-
 
   end
