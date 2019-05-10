@@ -9,7 +9,6 @@ class Oystercard
 
     @balance = balance
     @entry_station = nil
-    @exit_station = nil
     @journey_log = []
     @one_journey = Hash.new
 
